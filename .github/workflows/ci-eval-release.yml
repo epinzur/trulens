@@ -93,3 +93,16 @@ jobs:
           PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
           PINECONE_ENV: "us-west1-gcp-free"
           HUGGINGFACEHUB_API_TOKEN: ${{ secrets.HUGGINGFACE_API_KEY }}
+
+      - name: Do Release
+        run: |
+          conda activate trulens-llm
+          cd ./trulens_eval
+          pip install twine
+          make clean
+          make build
+          make upload
+        shell: bash -el {0}
+        env:
+          TOKEN: ${{ secrets.PYPI_UPLOAD_TOKEN }}
+
