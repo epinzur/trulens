@@ -40,7 +40,7 @@ class BuildJavascript(build):
 
     def run(self):
         """Custom build command to run npm commands before building the package.
-    
+
         This builds the record timeline component for the dashboard.
         """
 
@@ -54,7 +54,7 @@ class BuildJavascript(build):
 
 
 setup(
-    name="trulens_eval",
+    name="epinzur_trulens_eval",
     cmdclass={
         'build': BuildJavascript,
     },
