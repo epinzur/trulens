@@ -63,7 +63,7 @@ jobs:
           conda activate myenv
           cd ./trulens_eval
           pip install pytest==7.0.1 pytest-azurepipelines
-          pip install -r requirements.optional.txt
+          pip install -r trulens_eval/requirements.optional.txt
           echo "$(python --version)"
           echo "$(pip list)"
         shell: bash -el {0}
