@@ -6,7 +6,7 @@ on:
       - releases/*
 
 jobs:
-  ReleaseTests:
+  tests:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -94,9 +94,29 @@ jobs:
           PINECONE_ENV: "us-west1-gcp-free"
           HUGGINGFACEHUB_API_TOKEN: ${{ secrets.HUGGINGFACE_API_KEY }}
 
+  release:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        include:
+          - python-version: '3.11'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          clean: true
+      - name: Setup Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+          activate-environment: myenv
       - name: Do Release
         run: |
-          conda activate trulens-llm
+          conda activate myenv
           cd ./trulens_eval
           pip install twine
           make clean
