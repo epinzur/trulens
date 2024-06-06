@@ -25,21 +25,21 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ matrix.python-version }}
-          activate-environment: myenv
+          activate-environment: trulens-llm
 
       - name: Install Pip Packages
         run: |
-          conda activate myenv
+          conda activate trulens-llm
           cd ./trulens_eval
           pip install -e .
           pip install -r tests/docs_notebooks/requirements.txt
           pip install yapf==0.32.0 isort==5.10.1 ipykernel
-          python -m ipykernel install --user
+          python -m ipykernel install --user --name trulens-llm --display-name trulens-llm
         shell: bash -el {0}
 
       - name: Format Code and Check for Diffs
         run: |
-          conda activate myenv
+          conda activate trulens-llm
           echo Using $(yapf --version) and isort $(isort --vn)
           ./format.sh --eval
           num_changed_files=`git ls-files --others -m --exclude-standard ./trulens_eval | wc -l`
@@ -52,7 +52,7 @@ jobs:
 
       - name: Run Combine Docs for Testing
         run: |
-          conda activate myenv
+          conda activate trulens-llm
           cd ./docs/trulens_eval
           pip install jupyter nbmerge
           ../../.github/workflows/combine_nb_to_docs_testing.sh
@@ -60,7 +60,7 @@ jobs:
 
       - name: Install Optional Dependencies and List Environment
         run: |
-          conda activate myenv
+          conda activate trulens-llm
           cd ./trulens_eval
           pip install pytest==7.0.1 pytest-azurepipelines
           pip install -r trulens_eval/requirements.optional.txt
@@ -70,7 +70,7 @@ jobs:
 
       - name: Run E2E Tests
         run: |
-          conda activate myenv
+          conda activate trulens-llm
           cd ./trulens_eval
           python -m pytest tests/e2e
         shell: bash -el {0}
@@ -83,7 +83,7 @@ jobs:
 
       - name: Run Notebook Tests
         run: |
-          conda activate myenv
+          conda activate trulens-llm
           cd ./trulens_eval
           python -m pytest tests/docs_notebooks
         shell: bash -el {0}
